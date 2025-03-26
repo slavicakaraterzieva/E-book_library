@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block mytitle %}
+     register
+{% endblock %}
+
+{% block main %}
+
+    <form action="/register" method="post">
+        <label class="mb-3 alert alert-primary text-center hidden" for="password" id="error_label"></label>
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password" onfocusout="validatePassword()">
+        </div>
+        <div class="mb-3">
+
+            <input class="form-control mx-auto w-auto" id="confirmation" name="confirmation" placeholder="Confirm Password" type="password">
+        </div>
+        <div class=mb-3>
+            <h4>Register as: </h4>
+            <div class="form-check-inline">
+                <input class="form-check-input" type="radio" name="reader" id="reader" value="reader" onchange="toggle_radio1()" checked>
+                <label class="form-check-label" for="reader">
+                  Reader  <b class="ms-3">or</b>
+                </label>
+              </div>
+              <div class="form-check-inline">
+                <input class="form-check-input" type="radio" name="publisher" id="publisher" value="publisher" onchange="toggle_radio2()">
+                <label class="form-check-label" for="publisher">
+                  Publisher
+                </label>
+              </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <script>
+        function validatePassword() {
+            var passwordInput = document.getElementById("password");
+            var password = passwordInput.value;
+            var get_class = document.getElementById("error_label")
+        // Define the regex pattern for the password
+            var passwordPattern = /^(?=.*[A-Za-z])(?=.*[@$!%*#?&])(?=.*\d).{6,}$/;
+
+        // Test if the password matches the pattern
+            if (passwordPattern.test(password)) {
+                get_class.classList.remove("hidden")
+                document.getElementById("error_label").innerHTML = "Password is good";
+            } else {
+                get_class.classList.remove("hidden")
+                document.getElementById("error_label").innerHTML = "Password should be at least 6 characters long and contain at least one uppercase, one lowercase letter, one number and special sign(@$!%*#?&).";
+            }
+        }
+        function toggle_radio1() {
+           radio1 = document.getElementById("reader")
+           radio2 = document.getElementById("publisher")
+
+           radio1.check = false;
+           if(radio1.checked){
+           radio2.checked = false;
+           value1 = radio1.value;
+           //alert(value1);
+           }
+        }
+        function toggle_radio2() {
+           radio1 = document.getElementById("reader")
+           radio2 = document.getElementById("publisher")
+
+           radio2.check = false;
+           if(radio2.checked){
+           radio1.checked = false;
+           value2 = radio2.value;
+           //alert(value2);
+           }
+        }
+    </script>
+{% endblock %}
