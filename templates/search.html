@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block mytitle %}
+
+{% endblock %}
+
+{% block main %}
+
+<h1>Search</h1>
+<h4>Enter title or author or date published or chose from category list to browse...</h4>
+<form action="/search" method="POST">
+    <label for="search">Search:</label>
+    <input type="text" id="search" name="search" placeholder="Enter search term">
+    <select id="category" name="category">
+        <option value="">Choose Category</option>
+        {% for cat in category %}
+            <option value="{{cat['id']}}">{{cat["category_name"]}}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Search</button>
+</form>
+    {% if title %}
+    {% for result in title %}
+    <div class="results">
+
+        <p>Title: {{result["title"]}}</p>
+        <p>description: {{result["description"]}}</p>
+        <p>author: {{result["author"]}}</p>
+        <p>date published: {{result["date_published"]}}</p>
+        <a href="/read?search={{result['title']}}">Read</a>
+
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if author %}
+    {% for result in author %}
+    <div class="results">
+
+        <p>Title: {{result["title"]}}</p>
+        <p>description: {{result["description"]}}</p>
+        <p>author: {{result["author"]}}</p>
+        <p>date published: {{result["date_published"]}}</p>
+        <a href="/read?search={{result['title']}}">Read</a>
+
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if date %}
+    {% for result in date %}
+    <div class="results">
+
+        <p>Title: {{result["title"]}}</p>
+        <p>description: {{result["description"]}}</p>
+        <p>author: {{result["author"]}}</p>
+        <p>date published: {{result["date_published"]}}</p>
+        <a href="/read?search={{result['title']}}">Read</a>
+
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
+    {% for result in selected_book %}
+    <div class="results">
+
+        <p>Title: {{result["title"]}}</p>
+        <p>description: {{result["description"]}}</p>
+        <p>author: {{result["author"]}}</p>
+        <p>date published: {{result["date_published"]}}</p>
+        <a href="/read?search={{result['title']}}">Read</a>
+
+    </div>
+    {% endfor %}
+
+{% endblock %}
