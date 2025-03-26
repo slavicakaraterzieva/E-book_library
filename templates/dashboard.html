@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+{% block mytitle %}
+
+{% endblock %}
+
+{% block main %}
+<h4>{{username}}</h4>
+<h1 class="mb-5">Dashboard</h1>
+
+<div class="row">
+  <!--vertical nav-->
+  <nav class="navbar navbar-brand bg-dark col-sm-3 mb-3">
+
+    <div class="container-fluid">
+      <!-- Links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link  text-light" href="/account">Your Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link  text-light" href="/list_books">Read a Book</a>
+        </li>
+
+        <!-- For publishers -->
+        {% if type == "publisher" %}
+          <li class="nav-item">
+            <a class="nav-link  text-light" href="/upload_file">Upload Document</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  text-light" href="/update_desc">Update Description</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+
+  </nav>
+
+  <div class="col-lg-8">
+
+    {% if type == "publisher" %}
+    <h3>Your Books and Documents</h3>
+          <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-start" scope="col">ID</th>
+                    <th class="text-end" scope="col">Title</th>
+                    <th class="text-end" scope="col">Description</th>
+                    <th class="text-end" scope="col">Date Published</th>
+                    <th class="text-end" scope="col">Author</th>
+                    <th class="text-end" scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+              {% if published %}
+                    {% for books in published %}
+                    <tr>
+                        <th class="text-start">{{books["file_id"]}}</th>
+                        <th class="text-end">{{books["title"]}}</th>
+                        <td class="text-end">{{books["description"]}}</td>
+                        <td class="text-end">{{books["date_published"]}}</td>
+                        <td class="text-end">{{books["author"]}}</td>
+                        {% if books["title"] %}
+                        <td class="text-end"><a href="/edit_desc?book={{books['file_id']}}&cat={{ books['category_id']}}">Edit</a></td>
+
+                        <td class="text-end"><a href="/delete_book?del_book={{books['file_id']}}">Delete</a></td>
+
+                        {% endif %}
+                        {% if not books["title"] %}
+                        <td class="text-end"><a href="/update_desc">Update</a></td>
+
+                        {% endif %}
+                      {% endfor %}
+                        <h5>If you aren't seeing any books, you should upload files and update description to them</h5>
+                  {% endif %}
+                    </tr>
+        </tbody>
+        </table>
+    {% endif %}
+    </div>
+     <!-- End Publishers -->
+    {% if type == "reader"%}
+    <div class="coll-8 mt-5">
+     <h3>Saved For Reading Later</h4>
+
+          {% for pdfs in pdf %}
+
+          <div class="card flex justify-content:center" style="width:20rem; margin:6px;">
+            <div style="margin-left:-13px">
+              <iframe
+                src="{{ url_for('serve_file', filename=pdfs)}}">
+              </iframe>
+              </div>
+            <div class="card-body">
+              {% for selected in select_book %}
+                {% if selected["path"] == pdfs %}
+                  <p>title: {{selected["title"]}}</p>
+                  <p>description: {{selected["description"]}}</p>
+                  <p>author: {{selected["author"]}}</p>
+                  <p>date published: {{selected["date_published"]}}</p>
+                {% endif %}
+              {% endfor %}
+              <a href="{{ url_for('serve_file', filename=pdfs)}}" target="_blank" class="btn btn-primary">Read Now</a>
+              {% if type == "reader" %}
+              <a href="{{ url_for('remove_file', filename=pdfs)}}" class="btn btn-primary">Remove From List</a>
+              {% endif %}
+           </div>
+          </div>
+          {% endfor %}
+       </div>
+      </div>
+
+     {% endif %}
+      </div>
+</div>
+
+
+{% endblock %}
