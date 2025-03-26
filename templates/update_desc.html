@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block mytitle %}
+
+{% endblock %}
+
+{% block main %}
+
+<h1 class="mb-5">Enter Book Details</h1>
+
+<div class="row">
+  <!--vertical nav-->
+  <nav class="navbar navbar-brand bg-dark col-sm-3 mb-3">
+
+    <div class="container-fluid">
+      <!-- Links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link  text-light" href="/account">Your Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link  text-light" href="/list_of_books">Read a Book</a>
+        </li>
+        {% if type == "publisher" %}
+          <li class="nav-item">
+            <a class="nav-link  text-light" href="/upload_file">Upload Document</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  text-light" href="/update_desc">Update Description</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+
+  </nav>
+
+  <div class="col-lg-8">
+    <p>{{username}} {{type}}</p>
+
+    {% if type == "publisher" %}
+    <form action="/update_details" method="post">
+
+        <select id="file" name="file" required>
+            <option value="">Choose File</option>
+            {% for files in file %}
+                <option value="{{files['id']}}">{{files["path"]}}</option>
+            {% endfor %}
+        </select>
+
+        <select id="category" name="category" required>
+            <option value="">Choose Category</option>
+            {% for cat in category %}
+                <option value="{{cat['id']}}">{{cat["category_name"]}}</option>
+            {% endfor %}
+        </select>
+        <input class="form-control mb-2 mt-3" type="text" id="title" name="title" placeholder="Title" value="">
+        <textarea class="form-control mb-2" id="description" name ="description" rows="3" placeholder="description"></textarea>
+        <input class="form-control mb-2" type="text" id="author" name="author" placeholder="Author">
+        <input class="form-control mb-2" type="text" id="date" name="date" placeholder="Published in dd.mm.yy">
+        <input class="form-control mb-5" type="text" id="publisher" name="publisher" placeholder="Your Name" value="{{name}}">
+        <input class="form-control mb-5 bg-primary-subtle" type="submit" data="{{file['id']}}">
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+
+{% endblock %}
