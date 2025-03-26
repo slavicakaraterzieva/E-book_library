@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block mytitle %}
+
+{% endblock %}
+
+{% block main %}
+
+<h1 class="mb-5">List Of Books</h1>
+
+<div class="row">
+  <!--vertical nav-->
+  <nav class="navbar navbar-brand bg-dark col-sm-3 mb-3">
+
+    <div class="container-fluid">
+      <!-- Links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link  text-light" href="/account">Your Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link  text-light" href="/list_books">Read a Book</a>
+        </li>
+        {% if type == "publisher" %}
+          <li class="nav-item">
+            <a class="nav-link  text-light" href="/upload_file">Upload Document</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  text-light" href="/update_desc">Update Description</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+
+  </nav>
+    {% for pdfs in pdf %}
+      <div class="card flex justify-content:center" style="width:20rem; margin:6px;">
+        <div style="margin-left:-13px">
+          <iframe
+            src="{{ url_for('serve_file', filename=pdfs)}}">
+          </iframe>
+          </div>
+        <div class="card-body">
+          {% for selected in select_book %}
+              {% if selected["path"] == pdfs %}
+                  <p>title: {{selected["title"]}}</p>
+                  <p>description: {{selected["description"]}}</p>
+                  <p>author: {{selected["author"]}}</p>
+                  <p>date published: {{selected["date_published"]}}</p>
+              {% endif %}
+          {% endfor %}
+          <a href="{{ url_for('serve_file', filename=pdfs)}}" target="_blank" class="btn btn-primary">Read Now</a>
+          {% if type == "reader" %}
+          <a href="{{ url_for('read_later', filename=pdfs)}}" class="btn btn-primary">Read Later</a>
+          {% endif %}
+       </div>
+      </div>
+      {% endfor %}
+
+ </div>
+
+  </div>
+{% endblock %}
