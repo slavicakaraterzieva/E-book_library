@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block mytitle %}
+
+{% endblock %}
+
+{% block main %}
+
+<h1 class="mb-5">Edit Book Details</h1>
+
+<div class="row">
+  <!--vertical nav-->
+  <nav class="navbar navbar-brand bg-dark col-sm-3 mb-3">
+
+    <div class="container-fluid">
+      <!-- Links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link  text-light" href="/account">Your Account</a>
+        </li>
+        {% if type == "publisher" %}
+          <li class="nav-item">
+            <a class="nav-link  text-light" href="/upload_file">Upload Document</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  text-light" href="/update_desc">Update Description</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+
+  </nav>
+
+  <div class="col-lg-8">
+    <p>{{username}} {{type}}</p>
+    <p>book id {{book}}</p>
+    {% if type == "publisher" %}
+    <form action="/edit_desc" method="post">
+        <select id="file" name="file" required>
+            <option value="{{book}}">{{book_name}}</option>
+            {% for files in file %}
+            <option value="{{files['id']}}">{{files["path"]}}</option>
+            {% endfor %}
+        </select>
+    {% endif %}
+        <select id="category" name="category" required>
+                <option value="{{ cat_id }}">{{ cat_name }}</option>
+            {% for cat in category %}
+                <option value="{{cat['id']}}">{{cat["category_name"]}}</option>
+            {% endfor %}
+        </select>
+        {% for book in selected_book %}
+        <input class="form-control mb-2 mt-3" type="text" id="title" name="title" placeholder="Title" value="{{book['title']}}" required>
+        <textarea class="form-control mb-2" id="description" name ="description" rows="3" placeholder="{{book['description']}}" required></textarea>
+        <input class="form-control mb-2" type="text" id="author" name="author" placeholder="Author" value="{{book['author']}}" required>
+        <input class="form-control mb-2" type="text" id="date" name="date" placeholder="Published in dd.mm.yy" value="{{book['date_published']}}" required>
+        {% endfor %}
+        {% for name in publisher %}
+        <input class="form-control mb-5" type="text" id="publisher" name="publisher" placeholder="Your Name" value="{{name['first_name']}} {{name['last_name']}}">
+        {% endfor %}
+        <input class="form-control mb-5 bg-primary-subtle" type="submit">
+      </form>
+
+
+    {% if selected_book %}
+    <h1>Selected Book Details</h1>
+    {%for book in selected_book%}
+    <p>Book Title: {{ book["title"] }}</p>
+    <p>description: {{book["description"]}}</p>
+    <p>Author: {{ book["author"] }}</p>
+    <p>date published: {{book["date_published"]}}</p>
+    {%endfor%}
+    {% for name in publisher %}
+    <p>publisher: {{name["first_name"]}} {{name["last_name"]}}</p>
+    {% endfor %}
+    <!-- Add more details as needed -->
+{% else %}
+    <p>No book selected</p>
+{% endif %}
+  </div>
+</div>
+
+
+{% endblock %}
