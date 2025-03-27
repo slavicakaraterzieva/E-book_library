@@ -1,7 +1,7 @@
 import os
 from flask import Flask, flash, redirect, url_for, render_template, request, session, send_from_directory
-from cs50 import SQL
-from flask_session import Session
+#from cs50 import SQL
+#from flask_session import Session
 from flask import session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 # sanitizes the file name
@@ -20,10 +20,10 @@ app.config["ALLOWED_EXTENSIONS"] = [".pdf"]
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+#Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///project.db")
+#db = SQL("sqlite:///project.db")
 
 
 @app.after_request
