@@ -17,7 +17,7 @@ app.config["UPLOAD_DIRECTORY"] = "uploads/"
 # max file size 16MB
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 # allowed file extensions
-app.config["ALLOWED_EXTENSIONS"] = [".pdf"]
+app.config["ALLOWED_EXTENSIONS"] = [".pdf", ".jpg", ".jpeg", ".png"]
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -228,7 +228,7 @@ def upload():
                 flash(f"Select file!")
             else:
                 if extension not in app.config["ALLOWED_EXTENSIONS"]:
-                    return apology("Only pdf files accepted", 403)
+                    return apology("Only pdf, jpg, jpeg and pdf files accepted", 403)
                 # load file name in a secure string to be saved in a folder
                 file.save(os.path.join(app.config["UPLOAD_DIRECTORY"],secure_filename(file.filename)))
         except RequestEntityTooLarge:

@@ -60,15 +60,13 @@
                         <td class="text-end">{{books["description"]}}</td>
                         <td class="text-end">{{books["date_published"]}}</td>
                         <td class="text-end">{{books["author"]}}</td>
+
                         {% if books["title"] %}
                         <td class="text-end"><a href="/edit_desc?book={{books['file_id']}}&cat={{ books['category_id']}}">Edit</a></td>
 
                         <td class="text-end"><a href="/delete_book?del_book={{books['file_id']}}">Delete</a></td>
 
                         {% endif %}
-                       <!--  {% if not books["title"] %}
-                        <td class="text-end"><a href="/update_desc">Update</a></td> -->
-
                         {% endif %}
                       {% endfor %}
                         <h5>If you aren't seeing any books, you should upload files and update description to them</h5>
