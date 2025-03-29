@@ -1,7 +1,8 @@
 import os
+import sqlite3
 from flask import Flask, flash, redirect, url_for, render_template, request, session, send_from_directory
-#from cs50 import SQL
-#from flask_session import Session
+from flask_session import Session
+from cs50 import SQL
 from flask import session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 # sanitizes the file name
@@ -20,11 +21,14 @@ app.config["ALLOWED_EXTENSIONS"] = [".pdf"]
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-#Session(app)
+Session(app)
+#db = sqlite3.connect('project.db', check_same_thread=False)
 
 # Configure CS50 Library to use SQLite database
-#db = SQL("sqlite:///project.db")
-
+db = SQL("sqlite:///project.db")
+#db = sqlite3.connect("project.db", check_same_thread=False)
+#cursor = db.cursor()
+#db.row_factory = sqlite3.Row
 
 @app.after_request
 def after_request(response):
@@ -49,9 +53,10 @@ def index():
 
         # search the database for name and type of account
         type = db.execute("SELECT type FROM users WHERE id = ?", id)[0]["type"]
-        username = db.execute("SELECT username FROM users WHERE id = ?", id)[0]["username"]
+        #username = db.execute("SELECT username FROM users WHERE id = ?", id)[0]["username"]
+        username = db.execute("SELECT username FROM users WHERE id = ?", (id,))[0]["username"]
         return render_template("index.html", type=type, username=username)
-
+    
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -73,9 +78,11 @@ def login():
         # Query database for username
         rows = db.execute(
             "SELECT * FROM users WHERE username = ?", request.form.get("username")
+            #"SELECT * FROM users WHERE username = ?", (request.form.get("username"),)
         )
 
         # Ensure username exists and password is correct
+        #rows = cursor.fetchone()
         if len(rows) != 1 or not check_password_hash(
             rows[0]["hash"], request.form.get("password")
         ):
